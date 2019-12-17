@@ -1,6 +1,7 @@
 import Branch
 import Flutter
 import UIKit
+import FBSDKCoreKit
 
 public class SwiftFlutterBranchIoPlugin: FlutterPluginAppLifeCycleDelegate, FlutterPlugin {
     static var eventHandler: EventStreamHandler?
@@ -145,6 +146,12 @@ public class SwiftFlutterBranchIoPlugin: FlutterPluginAppLifeCycleDelegate, Flut
     override public func application(
         _ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [AnyHashable: Any]
     ) -> Bool {
+
+        Branch.getInstance().delayInitToCheckForSearchAds()
+
+        // You must call this before you call initSession
+        Branch.getInstance().registerFacebookDeepLinkingClass(AppLinkUtility.self)
+
         Branch.getInstance().initSession(launchOptions: launchOptions) { params, error in
             // do stuff with deep link data (nav to page, display content, etc)
             print(params as? [String: AnyObject] ?? {})

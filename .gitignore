@@ -8,5 +8,5 @@ pubspec.lock
 *.iml
 
 build/
-
+example/ios/Flutter/flutter_export_environment.sh
 example/android/app/src/main/AndroidManifest.xml
