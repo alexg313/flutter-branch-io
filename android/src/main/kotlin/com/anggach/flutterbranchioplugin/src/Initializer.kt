@@ -7,10 +7,14 @@ import com.anggach.flutterbranchioplugin.INTENT_EXTRA_DATA
 import io.branch.referral.Branch
 import io.branch.referral.BranchError
 import io.branch.referral.BranchUtil
+import io.branch.referral.validators.IntegrationValidator
 import io.flutter.plugin.common.PluginRegistry
 import io.flutter.plugin.common.MethodChannel.Result
 import org.json.JSONObject
 
+fun validate(registry: PluginRegistry.Registrar) {
+    IntegrationValidator.validate(registry.activity().applicationContext);
+}
 
 fun init(registrar: PluginRegistry.Registrar) {
     if (!BranchUtil.isTestModeEnabled()) {
@@ -31,12 +35,16 @@ fun setUpBranchIo(registrar: PluginRegistry.Registrar, deepLinkStreamHandler: De
     Branch.getInstance().initSession({ referringParams: JSONObject?, error: BranchError? ->
         Log.d(DEBUG_NAME, "BRANCH CALLBACK")
         if (error == null) {
+            Log.d(DEBUG_NAME, "BRANCH NO ERROR")
+
             result.success("BRANCH IO INITIALIZED")
             val params = referringParams?.toString()
             val intent = Intent()
             intent.putExtra(INTENT_EXTRA_DATA, params)
             deepLinkStreamHandler!!.handleIntent(registrar.activity(), intent)
         } else {
+            Log.d(DEBUG_NAME, "BRANCH ERROR?!?!?!")
+
             result.error("1", "BRANCH IO INITIALIZATION ERROR ${error.message}", null)
         }
     }, registrar.activity().intent.data, registrar.activity())

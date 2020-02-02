@@ -16,6 +16,10 @@ class FlutterBranchIoPlugin {
   static Stream<String> mainStream;
   static Stream<String> generatedLinkStream;
 
+  static void validate() {
+    _messageChannel.invokeMethod('validate');
+  }
+
   static void setupBranchIO() {
     if (Platform.isAndroid) _messageChannel.invokeMethod('initBranchIO');
   }

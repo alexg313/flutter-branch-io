@@ -45,6 +45,10 @@ class FlutterBranchIoPlugin(private var registrar: Registrar) : MethodCallHandle
 
     override fun onMethodCall(call: MethodCall, result: Result) {
         when {
+
+            call.method == "validate" -> {
+                validate(registrar)
+            }
             call.method == "initBranchIO" -> {
                 setUpBranchIo(registrar, deepLinkStreamHandler, result)
             }
